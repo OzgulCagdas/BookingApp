@@ -1,24 +1,32 @@
-
 import { DataTypes } from 'sequelize';
 import sequelize from '../database.js'; // Önceki adımda oluşturduğunuz bağlantıyı içe aktarın
 
-const Room = sequelize.define('Room', {
-  name: {
+const Room = sequelize.define('rooms', {
+  title: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  address: {
+  price: {
+    type: DataTypes.NUMBER,
+    allowNull: false
+  },
+  maxPeople: {
+    type: DataTypes.NUMBER,
+    allowNull: false
+  },
+  desc: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  rooms: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+  roomNumbers:[{number: Number,unavailableDates:{type: [Date]}}],
   },
-  photos: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
-  },
- 
-  // Diğer sütunlar...
-});
+  {timestamps:true}
+);
 
+/*
+[
+  {number:101,unavailableDates:[01.05.2023,02.05.2023]},
+  {number:102,unavailableDates:[01.05.2023,02.05.2023]},
+]
+*/
 export default Room;

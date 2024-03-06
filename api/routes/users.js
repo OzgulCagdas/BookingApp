@@ -3,7 +3,7 @@ import { DeleteUser, FindUser,FindAllUser, UpdateUser } from "../controllers/use
 import { verifyToken ,verifyUser,verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
-
+/*
 router.get("/checkauthentication",verifyToken,(req,res, next) =>{
     res.send("Hello user you are loggin ")
 
@@ -18,14 +18,14 @@ router.get("/checkadmin/:id",verifyAdmin,(req,res, next) =>{
     res.send("Hello user you are loggin and you are admin  you can delete  ")
 
 })
-
+*/
 /// update data
-router.put("/:id", UpdateUser)
+router.put("/:id",verifyUser, UpdateUser)
 // delete
-router.delete("/:id", DeleteUser)
-// get all
-router.get("/", FindAllUser)
+router.delete("/:id",verifyUser, DeleteUser)
 // get
-router.get("/:id", FindUser)
+router.get("/:id",verifyUser, FindUser)
+// get all
+router.get("/",verifyAdmin, FindAllUser)
 
 export default router;

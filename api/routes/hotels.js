@@ -1,10 +1,11 @@
 import express from "express";
 import { DeleteHotel, FindHotel,FindAllHotel, UpdateHotel, CreateHotel } from "../controllers/hotel.js";
+import { verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
 /// create data
-router.post("/", CreateHotel)
+router.post("/", verifyAdmin, CreateHotel)
 /*
 router.post("/", async (req, res) => {
     const newHotel = new Hotel(req.body);
@@ -18,7 +19,7 @@ router.post("/", async (req, res) => {
 */
 
 /// update data
-router.put("/:id", UpdateHotel)
+router.put("/:id",verifyAdmin, UpdateHotel)
 /*
 router.put("/:id", async (req, res) => {
     try {
@@ -34,7 +35,7 @@ router.put("/:id", async (req, res) => {
 
 */
 // delete
-router.delete("/:id", DeleteHotel)
+router.delete("/:id",verifyAdmin, DeleteHotel)
 
 /*
 router.delete("/:id", async (req, res) => {
