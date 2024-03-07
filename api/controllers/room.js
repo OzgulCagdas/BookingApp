@@ -7,8 +7,6 @@ export const CreateRoom = async (req, res, next) => {
     const hotelId = req.params.hotelId;
     const newRoom = new Room(req.body);
 
-    console.log(hotelId);
-    console.log(req.body);
     
 
     try {
@@ -21,8 +19,20 @@ export const CreateRoom = async (req, res, next) => {
             if (!hotel) {
                 throw CreateError(404, "Hotel not found");
             }
-            await hotel.update({ $push: { rooms: savedRoom.id } });
-            res.status(200).json(savedRoom);
+            // Hotel nesnesinde rooms alanı yoksa veya null veya undefined ise, varsayılan olarak boş bir dizi ata
+            const roomsArray = hotel.rooms || [];
+            // Yeni oda kimliğini dizinin sonuna ekle
+            roomsArray.push(savedRoom.id);
+
+            // Otel kaydını güncelle
+            await Hotel.update({ rooms: roomsArray }, {
+                where: { id: hotelId }
+            });
+
+            // Güncellenmiş otel kaydını al
+            const updatedHotel = await Hotel.findByPk(hotelId);
+
+            res.status(200).json({ room: savedRoom, hotel: updatedHotel });
         } catch (err) {
             next(err);
         }
@@ -45,16 +55,30 @@ export  const UpdateRoom =async (req,res,next) =>{
 }
 
 export  const DeleteRoom =async (req,res,next) =>{
+
+    const hotelId = req.params.hotelId;
+    const hotel = await Hotel.findByPk(hotelId);
     const roomId = req.params.id;
     try {
         const deletedRoom = await Room.destroy({
             where: { id: roomId }
         });
+        
         if (!deletedRoom) {
             res.status(404).json({ message: "Silinecek room bulunamadı." });
             return;
         }
-        res.status(200).json({ message: "Room başarıyla silindi." });
+        try {
+            // Belirli bir oda numarasını diziden kaldırma
+            console.log(req.params.id);
+            const updatedRooms = hotel.rooms.filter(room => room !== parseInt(req.params.id));
+            console.log(updatedRooms)
+            // Otel kaydını güncelleme
+            await hotel.update({ rooms: updatedRooms });
+            res.status(200).json({ message: "Oda başarıyla silindi." });
+        } catch (error) {
+            next(error);
+        }
     } catch (err) {
         //res.status(500).json({ error: err.message });
         next(err)

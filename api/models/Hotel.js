@@ -10,11 +10,31 @@ const Hotel = sequelize.define('Hotel', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  cheapestPrice: {
+    type: DataTypes.NUMBER,
+    allowNull: false
+  },
+  city: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  type: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   rooms: {
     type: DataTypes.ARRAY(DataTypes.STRING),
   },
   photos: {
     type: DataTypes.ARRAY(DataTypes.STRING),
+  },
+  featured: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
  
   // Diğer sütunlar...

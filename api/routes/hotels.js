@@ -1,5 +1,5 @@
 import express from "express";
-import { DeleteHotel, FindHotel,FindAllHotel, UpdateHotel, CreateHotel } from "../controllers/hotel.js";
+import { DeleteHotel, FindHotel,FindAllHotel, UpdateHotel, CreateHotel, CountByCity, CountByType } from "../controllers/hotel.js";
 import { verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
@@ -69,7 +69,7 @@ router.get("/", async (req, res) => {
 
 // get
 
-router.get("/:id", FindHotel)
+router.get("/find/:id", FindHotel)
 /*
 router.get("/:id", async (req, res,next) => {
     const hotelId ="xxxxx" //req.params.id;
@@ -88,6 +88,10 @@ router.get("/:id", async (req, res,next) => {
 });
 */
 
+
+router.get("/countByCity", CountByCity)
+
+router.get("/countByType", CountByType)
 
 
 export default router;

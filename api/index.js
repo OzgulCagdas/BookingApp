@@ -9,10 +9,12 @@ import roomsRoute from './routes/rooms.js'
 import usersRoute from './routes/users.js'
 import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 
 const pool = mysql.createPool(config.database);
 //middlewares
+app.use(cors());
 app.use(cookieParser())
 app.use(express.json());
 
