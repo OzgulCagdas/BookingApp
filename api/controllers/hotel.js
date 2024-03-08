@@ -1,5 +1,7 @@
 import Hotel from "../models/Hotel.js"
 import { CreateError } from "../utils/error.js";
+import { QueryTypes } from 'sequelize'; // QueryTypes'ı içe aktarın
+
 import sequelize from '../database.js'; // Önceki adımda oluşturduğunuz bağlantıyı içe aktarın
 
 export  const CreateHotel =async (req,res,next) =>{
